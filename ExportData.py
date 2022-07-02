@@ -33,8 +33,6 @@ def create_file(path: str, name: str, data):
                'Return airport', 'Return Duration', 'Return Arrive', 'Return Airport', 'Price', 'Link']
     cell = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     index = 0
-    value_index = 0
-    test_index = 0
     cell_index = 2
     # Handles the creation of columns with desired size.
     # Iterate over all headers and add the header to each cell[index]
@@ -62,14 +60,10 @@ def open_file(path: str):
 class Export:
 
     def __init__(self):
-        self.book = None
-        self.data = [('13:25', 'LHR', '30h 40', '17:05', 0, '13:00', 'FLN', '38h 30', '06:30', 0, '£845', 'https://www.skyscanner.net/transport/flights/lond/nvt/221203/230131/config/13554-2212031325--32695-2-11562-2212041705%7C11562-2301311300--32531,-32695-2-13554-2302020630?adultsv2=1&cabinclass=economy&childrenv2=&inboundaltsenabled=true&outboundaltsenabled=false&preferdirects=false&rtn=1'), ('13:25', 'LHR', '30h 40', '17:05', 0, '13:00', 'FLN', '38h 30', '06:30', 0, '£845', 'https://www.skyscanner.net/transport/flights/lond/nvt/221203/230131/config/13554-2212031325--32695-2-11562-2212041705%7C11562-2301311300--32531,-32695-2-13554-2302020630?adultsv2=1&cabinclass=economy&childrenv2=&inboundaltsenabled=true&outboundaltsenabled=false&preferdirects=false&rtn=1'), ('13:25', 'LHR', '30h 40', '17:05', 0, '13:00', 'FLN', '38h 30', '06:30', 0, '£845', 'https://www.skyscanner.net/transport/flights/lond/nvt/221203/230131/config/13554-2212031325--32695-2-11562-2212041705%7C11562-2301311300--32531,-32695-2-13554-2302020630?adultsv2=1&cabinclass=economy&childrenv2=&inboundaltsenabled=true&outboundaltsenabled=false&preferdirects=false&rtn=1'), ('13:25', 'LHR', '30h 40', '17:05', 0, '13:00', 'FLN', '38h 30', '06:30', 0, '£845', 'https://www.skyscanner.net/transport/flights/lond/nvt/221203/230131/config/13554-2212031325--32695-2-11562-2212041705%7C11562-2301311300--32531,-32695-2-13554-2302020630?adultsv2=1&cabinclass=economy&childrenv2=&inboundaltsenabled=true&outboundaltsenabled=false&preferdirects=false&rtn=1'), ('13:25', 'LHR', '30h 40', '17:05', 0, '13:00', 'FLN', '38h 30', '06:30', 0, '£845', 'https://www.skyscanner.net/transport/flights/lond/nvt/221203/230131/config/13554-2212031325--32695-2-11562-2212041705%7C11562-2301311300--32531,-32695-2-13554-2302020630?adultsv2=1&cabinclass=economy&childrenv2=&inboundaltsenabled=true&outboundaltsenabled=false&preferdirects=false&rtn=1'), ('13:25', 'LHR', '30h 40', '17:05', 0, '13:00', 'FLN', '38h 30', '06:30', 0, '£845', 'https://www.skyscanner.net/transport/flights/lond/nvt/221203/230131/config/13554-2212031325--32695-2-11562-2212041705%7C11562-2301311300--32531,-32695-2-13554-2302020630?adultsv2=1&cabinclass=economy&childrenv2=&inboundaltsenabled=true&outboundaltsenabled=false&preferdirects=false&rtn=1'), ('13:25', 'LHR', '30h 40', '17:05', 0, '13:00', 'FLN', '38h 30', '06:30', 0, '£845', 'https://www.skyscanner.net/transport/flights/lond/nvt/221203/230131/config/13554-2212031325--32695-2-11562-2212041705%7C11562-2301311300--32531,-32695-2-13554-2302020630?adultsv2=1&cabinclass=economy&childrenv2=&inboundaltsenabled=true&outboundaltsenabled=false&preferdirects=false&rtn=1')]
-        self.main()
+        pass
 
     def main(self):
-        data = self.data
-        create_file("data", "test", data)
-        # self.book = open_file("./data/test.xlsx")
+        pass
 
 
 if __name__ == '__main__':

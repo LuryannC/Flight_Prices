@@ -19,7 +19,6 @@ class FlightBot:
         self.config = ConfigClass()
         self.driver = self.config.driver
         self.main()
-        self.data_book = None
         self.data = None
 
     def main(self):
@@ -31,7 +30,7 @@ class FlightBot:
         sleep(randint(5, 8))
         self.get_data()
         sleep(3)
-        create_file('data', '{}-{} {}-{}'.format(self.config.chosen_day[0], self.config.chosen_day[1], self.config.chosen_return[0], self.config.chosen_return[1]), self.data)
+        create_file('data', '{}-{} to {}-{}'.format(self.config.chosen_day[0], self.config.chosen_day[1], self.config.chosen_return[0], self.config.chosen_return[1]), self.data)
 
     def check_if_exists(self, by, path):
         try:
@@ -147,10 +146,6 @@ class FlightBot:
             temp_list.append(div_wrapped)
         self.data = temp_list
         return self.data
-
-    def testing_data(self):
-        text = self.driver.find_element(By.XPATH, '//a[@class="MV3Tnb"]').text
-        create_file("data", "test", self.data)
 
 
 if __name__ == '__main__':

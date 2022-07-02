@@ -26,11 +26,11 @@ class ConfigClass:
         self.random_version = f'{randint(80, 103)}.0.{randint(2000, 5013)}.{randint(10, 53)}'
 
         self.url = ["https://www.skyscanner.net", "https://www.skyscanner.net/sttc/px/captcha-v2/index.html",
-                    "https://www.google.co.uk",
-                    "https://www.skyscanner.net/transport/flights/lond/nvt/221203/230131/?adultsv2=1&cabinclass=economy&childrenv2=&inboundaltsenabled=true&outboundaltsenabled=false&preferdirects=false&rtn=1"]
+                    "https://www.google.co.uk"]
         self.create_file = True
 
         # Driver options and user agent
+        # Browser configs to bypass bot detection
         self.chrome_options = Options()
         self.ua = UserAgent()
         self.userAgent = self.ua.random
