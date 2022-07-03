@@ -11,7 +11,7 @@ Site scrapped:
 
 Clone the repository and install the requirements.
 ``` CMD
-git clone https://github.com/LuryannC/Flight_Prices.git && cd vehicle_scraping
+git clone https://github.com/LuryannC/Flight_Prices.git && cd Flight_Prices
 pip install -r requirements.txt
 ```
 To finally run:
