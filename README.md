@@ -21,7 +21,7 @@ python.exe .\Start.py
 
 The results are stored in ```./Flight_Prices/data/(filename).xlxs```
 
-# How long it takes to get the details
+# How long it takes to get the data
 
 The bot was defined to take 1min to get the data and output it into a file.
 It was set this way due the website protection against bot, as once deteceted it will bring the captcha every time an element is clicked and soft lock your IP for a few minutes.
