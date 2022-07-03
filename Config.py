@@ -18,8 +18,8 @@ class ConfigClass:
     def __init__(self):
         # Configs
         self.start_from = "London"  # Departing airport
-        self.destination = "NVT"  # Arriving airport
-        self.chosen_day = ("12", "2022-12")  # Departing date
+        self.destination = "GRU"  # Arriving airport
+        self.chosen_day = ("10", "2022-12")  # Departing date
         self.chosen_return = ("01", "2023-02")  # Return date
         self.add_nearby = True  # Add nearby airports for destination
 

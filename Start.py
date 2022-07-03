@@ -1,3 +1,4 @@
+import os
 from time import sleep
 from Config import ConfigClass
 from random import randint
@@ -30,6 +31,10 @@ class FlightBot:
         sleep(randint(5, 8))
         self.get_data()
         sleep(3)
+        try:
+            os.makedirs('.\data', exist_ok=True)
+        except OSError as error:
+            return
         create_file('data', '{}-{} to {}-{}'.format(self.config.chosen_day[0], self.config.chosen_day[1], self.config.chosen_return[0], self.config.chosen_return[1]), self.data)
 
     def check_if_exists(self, by, path):
