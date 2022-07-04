@@ -24,7 +24,7 @@ class FlightBot:
 
     def main(self):
         self.driver.get(self.config.url[0])
-        sleep(12)
+        sleep(6)
         self.accept_cookies()
         sleep(randint(3, 6))
         self.start_search(self.config.start_from)
@@ -35,7 +35,7 @@ class FlightBot:
             os.makedirs('.\data', exist_ok=True)
         except OSError as error:
             return
-        create_file('data', '{}-{} to {}-{}'.format(self.config.chosen_day[0], self.config.chosen_day[1], self.config.chosen_return[0], self.config.chosen_return[1]), self.data)
+        create_file('data', '{}-{} {}-{} to {}-{}'.format(self.config.start_from, self.config.destination,self.config.chosen_day[0], self.config.chosen_day[1], self.config.chosen_return[0], self.config.chosen_return[1]), self.data)
 
     def check_if_exists(self, by, path):
         try:
@@ -125,8 +125,8 @@ class FlightBot:
             arriving_time = div.find_element(By.XPATH,
                                              './/div[@class="LegInfo_routePartialArrive__Y2U1N"]//span[@class="BpkText_bpk-text__YWQwM BpkText_bpk-text--lg__ODFjM LegInfo_routePartialTime__OTFkN"]//div//span[@class="BpkText_bpk-text__YWQwM BpkText_bpk-text--subheading__ODU3O"]').text
             # To-do
-            arriving_airport = 0  # div.find_element(By.XPATH,
-            #                './/div[@class="LegInfo_routePartialArrive__Y2U1N"]//span[@class="BpkText_bpk-text__YWQwM BpkText_bpk-text--body-default__NGZhN"]//span').text
+            arriving_airport = div.find_element(By.XPATH,
+                            './/div[@class="LegInfo_routePartialArrive__Y2U1N"]//span[2][@class="BpkText_bpk-text__YWQwM BpkText_bpk-text--body-default__NGZhN"]//span').text
 
             return_time = div.find_element(By.XPATH,
                                            './/div[@class="UpperTicketBody_legsContainer__ZjcyZ"]//div[@class="LegDetails_container__MTkyZ UpperTicketBody_leg__MmNkN"][2]//div[@class="LegInfo_legInfo__ZGMzY"]//div[@class="LegInfo_routePartialDepart__NzEwY"]//span//div//span').text
@@ -137,8 +137,8 @@ class FlightBot:
             return_arrive_time = div.find_element(By.XPATH,
                                                   './/div[@class="UpperTicketBody_legsContainer__ZjcyZ"]//div[@class="LegDetails_container__MTkyZ UpperTicketBody_leg__MmNkN"][2]//div[@class="LegInfo_legInfo__ZGMzY"]//div[@class="LegInfo_routePartialArrive__Y2U1N"]//span[@class="BpkText_bpk-text__YWQwM BpkText_bpk-text--subheading__ODU3O"]').text
             # TO-DO
-            return_arrive_airport = 0  # div.find_element(By.XPATH,
-            #         './/div[@class="UpperTicketBody_legsContainer__ZjcyZ"]//div[@class="LegDetails_container__MTkyZ UpperTicketBody_leg__MmNkN"][2]//div[@class="LegInfo_legInfo__ZGMzY"]//div[@class="LegInfo_routePartialArrive__Y2U1N"]//span[@class="BpkText_bpk-text__YWQwM BpkText_bpk-text--body-default__NGZhN"]//span').text
+            return_arrive_airport = div.find_element(By.XPATH,
+                                                     './/div[@class="UpperTicketBody_legsContainer__ZjcyZ"]//div[@class="LegDetails_container__MTkyZ UpperTicketBody_leg__MmNkN"][2]//div[@class="LegInfo_legInfo__ZGMzY"]//div[@class="LegInfo_routePartialArrive__Y2U1N"]//span[@class="BpkText_bpk-text__YWQwM BpkText_bpk-text--body-default__NGZhN"]//span[1]').text
 
             price = div.find_element(By.XPATH,
                                      './/span[@class="BpkText_bpk-text__YWQwM BpkText_bpk-text--lg__ODFjM"]').text
