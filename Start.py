@@ -21,21 +21,46 @@ class FlightBot:
         self.driver = self.config.driver
         self.main()
         self.data = None
+        self.cheapest = ""
+        self.current_index = None
+        self.cookies_accepted = None
 
     def main(self):
-        self.driver.get(self.config.url[0])
-        sleep(6)
-        self.accept_cookies()
-        sleep(randint(3, 6))
-        self.start_search(self.config.start_from)
-        sleep(randint(5, 8))
-        self.get_data()
-        sleep(3)
-        try:
-            os.makedirs('.\data', exist_ok=True)
-        except OSError as error:
-            return
-        create_file('data', '{}-{} {}-{} to {}-{}'.format(self.config.start_from, self.config.destination,self.config.chosen_day[0], self.config.chosen_day[1], self.config.chosen_return[0], self.config.chosen_return[1]), self.data)
+        self.current_index = 0
+        self.cookies_accepted = False
+        for searches in range(len(self.config.chosen_return[0])):
+            if self.current_index > 0:
+                sleep(randint(3, 7))
+            self.driver.get(self.config.url[0])
+            sleep(6)
+            if not self.cookies_accepted:
+                self.accept_cookies()
+                sleep(randint(3, 6))
+                self.cookies_accepted = True
+            self.start_search(self.config.start_from)
+            if self.current_index == 1:
+                sleep(2)
+                if self.check_if_exists(By.XPATH, "//section[@id='price-alerts-modal']"):
+                    self.driver.find_element(By.XPATH, "//nav[@class='BpkNavigationBar_bpk-navigation-bar__MTM3M BpkModalInner_bpk-modal__navigation__YmZlY']//button").click()
+                    sleep(2)
+                else:
+                    continue
+            sleep(randint(9, 11))
+            self.get_data()
+            try:
+                os.makedirs('.\data', exist_ok=True)
+            except OSError as error:
+                return
+            if self.config.get_cheapest:
+                self.cheapest = "Cheapest"
+            else:
+                self.cheapest = " "
+            create_file('data', '{}-{} {}-{} to {}-{} - {}'.format(self.config.start_from, self.config.destination,
+                                                                   self.config.chosen_day[0], self.config.chosen_day[1],
+                                                                   self.config.chosen_return[0][self.current_index],
+                                                                   self.config.chosen_return[1], self.cheapest),
+                        self.data)
+            self.current_index += 1
 
     def check_if_exists(self, by, path):
         try:
@@ -46,7 +71,9 @@ class FlightBot:
 
     def accept_cookies(self):
         if self.check_if_exists(By.ID, 'acceptCookieButton'):
-            self.driver.find_element(By.ID, 'acceptCookieButton').click()
+            # self.driver.find_element().click()
+            WebDriverWait(self.driver, 2).until(
+                EC.element_to_be_clickable((By.ID, 'acceptCookieButton'))).click()
         else:
             pass
 
@@ -68,7 +95,7 @@ class FlightBot:
         destination_box_element.send_keys(dest)
         sleep(1)
         self.driver.find_element(By.XPATH, '//ul/li[@id="react-autowhatever-fsc-destination-search--item-0"]').click()
-        if self.config.add_nearby:
+        if self.config.add_nearby and self.current_index < 1:
             sleep(0.2)
             self.driver.find_element(By.XPATH, '//input[@name="destinationFlexible"]').click()
         self.fill_dates()
@@ -81,12 +108,17 @@ class FlightBot:
         sleep(0.6)
         # Select the dropdown menu
         self.driver.find_element(By.XPATH, '//select[@id="depart-calendar__bpk_calendar_nav_select"]').click()
-        sleep(0.6)
+        sleep(1.2)
         # Select the month specified
-        self.driver.find_element(By.XPATH, f'//option[@value="{self.config.chosen_day[1]}"]').click()
+        # self.driver.find_element(By.XPATH, f'//option[@value="{self.config.chosen_day[1]}"]').click()
+        WebDriverWait(self.driver, 2).until(
+            EC.element_to_be_clickable((By.XPATH, f'//option[@value="{self.config.chosen_day[1]}"]'))).click()
         # Select chosen day
-        self.driver.find_element(By.XPATH,
-                                 "//button//span[contains(text(), {})]".format(self.config.chosen_day[0])).click()
+        # self.driver.find_element(By.XPATH,
+        #                         "//button//span[contains(text(), {})]".format(self.config.chosen_day[0])).click()
+        WebDriverWait(self.driver, 2).until(
+            EC.element_to_be_clickable((By.XPATH,
+                                        f"//tbody//button//span[contains(text(), {self.config.chosen_day[0]})]"))).click()
         sleep(1)
         # Return
         # Select return box element
@@ -101,7 +133,7 @@ class FlightBot:
         # Select return day
         self.driver.find_element(By.XPATH,
                                  "//button[@class='BpkCalendarDate_bpk-calendar-date__MTdlO']//span[contains(text(), "
-                                 "{})]".format(self.config.chosen_return[0])).click()
+                                 "{})]".format(self.config.chosen_return[0][self.current_index])).click()
         sleep(1)
         self.driver.find_element(By.XPATH, "//button[@class='BpkButtonBase_bpk-button__NTM4Y "
                                            "BpkButtonBase_bpk-button--large__ZWQyM App_submit-button__NGFhZ "
@@ -110,9 +142,10 @@ class FlightBot:
 
     def get_data(self):
         sleep(randint(12, 16))
-        self.driver.find_element(By.XPATH,
-                                 '//button[@class="DangerouslyUnstyledButton_container__NGM5Y DangerouslyUnstyledButton_enabled__ZDg1M FqsTabs_fqsTabWithSparkle__ZjA2Z"]').click()
-        sleep(randint(3, 6))
+        if self.config.get_cheapest:
+            self.driver.find_element(By.XPATH,
+                                     '//button[@class="DangerouslyUnstyledButton_container__NGM5Y DangerouslyUnstyledButton_enabled__ZDg1M FqsTabs_fqsTabWithSparkle__ZjA2Z"]').click()
+        # sleep(randint(3, 6))
         root_div = self.driver.find_elements(By.XPATH, '//div[@class="EcoTicketWrapper_itineraryContainer__ZWE4O"]')
         temp_list = []
         for div in root_div:
@@ -126,7 +159,7 @@ class FlightBot:
                                              './/div[@class="LegInfo_routePartialArrive__Y2U1N"]//span[@class="BpkText_bpk-text__YWQwM BpkText_bpk-text--lg__ODFjM LegInfo_routePartialTime__OTFkN"]//div//span[@class="BpkText_bpk-text__YWQwM BpkText_bpk-text--subheading__ODU3O"]').text
             # To-do
             arriving_airport = div.find_element(By.XPATH,
-                            './/div[@class="LegInfo_routePartialArrive__Y2U1N"]//span[2][@class="BpkText_bpk-text__YWQwM BpkText_bpk-text--body-default__NGZhN"]//span').text
+                                                './/div[@class="LegInfo_routePartialArrive__Y2U1N"]//span[2][@class="BpkText_bpk-text__YWQwM BpkText_bpk-text--body-default__NGZhN"]//span').text
 
             return_time = div.find_element(By.XPATH,
                                            './/div[@class="UpperTicketBody_legsContainer__ZjcyZ"]//div[@class="LegDetails_container__MTkyZ UpperTicketBody_leg__MmNkN"][2]//div[@class="LegInfo_legInfo__ZGMzY"]//div[@class="LegInfo_routePartialDepart__NzEwY"]//span//div//span').text
@@ -137,6 +170,7 @@ class FlightBot:
             return_arrive_time = div.find_element(By.XPATH,
                                                   './/div[@class="UpperTicketBody_legsContainer__ZjcyZ"]//div[@class="LegDetails_container__MTkyZ UpperTicketBody_leg__MmNkN"][2]//div[@class="LegInfo_legInfo__ZGMzY"]//div[@class="LegInfo_routePartialArrive__Y2U1N"]//span[@class="BpkText_bpk-text__YWQwM BpkText_bpk-text--subheading__ODU3O"]').text
             # TO-DO
+            # return_arrive_airport = div.find_element(By.XPATH, './/div[@class="UpperTicketBody_legsContainer__ZjcyZ"]//div[@class="LegDetails_container__MTkyZ UpperTicketBody_leg__MmNkN"][2]//div[@class="LegInfo_legInfo__ZGMzY"]//div[@class="LegInfo_routePartialArrive__Y2U1N"]//span[@class="BpkText_bpk-text__YWQwM BpkText_bpk-text--body-default__NGZhN"]//span[@class="BpkText_bpk-text__YWQwM BpkText_bpk-text--body-default__NGZhN LegInfo_routePartialCityTooltip__NTE4Z"]').text
             return_arrive_airport = div.find_element(By.XPATH,
                                                      './/div[@class="UpperTicketBody_legsContainer__ZjcyZ"]//div[@class="LegDetails_container__MTkyZ UpperTicketBody_leg__MmNkN"][2]//div[@class="LegInfo_legInfo__ZGMzY"]//div[@class="LegInfo_routePartialArrive__Y2U1N"]//span[@class="BpkText_bpk-text__YWQwM BpkText_bpk-text--body-default__NGZhN"]//span[1]').text
 

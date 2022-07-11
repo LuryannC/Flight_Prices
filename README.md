@@ -14,6 +14,9 @@ Clone the repository and install the requirements.
 git clone https://github.com/LuryannC/Flight_Prices.git && cd Flight_Prices
 pip install -r requirements.txt
 ```
+
+Edit the day(multiple return days can be added), airport and desired configuration in the ```Config.py``` file.
+
 To finally run:
 ``` CMD
 python.exe .\Start.py

@@ -17,10 +17,11 @@ import undetected_chromedriver as uc
 class ConfigClass:
     def __init__(self):
         # Configs
-        self.start_from = "munich"  # Departing airport
-        self.destination = "gru"  # Arriving airport
-        self.chosen_day = ("10", "2022-12")  # Departing date
-        self.chosen_return = ("01", "2023-02")  # Return date
+        self.start_from = "lisbon"  # Departing airport
+        self.destination = "Memmingen"  # Arriving airport
+        self.chosen_day = (("23"), "2022-09")  # Departing date
+        self.chosen_return = [("27", "28", "29"), "2022-09"]  # Return date
+        self.get_cheapest = True  # Select cheapest or best flights
         self.add_nearby = True  # Add nearby airports for destination
 
         self.random_version = f'{randint(80, 103)}.0.{randint(2000, 5013)}.{randint(10, 53)}'
